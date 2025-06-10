@@ -1,8 +1,10 @@
-const transactionModel = require('../models/transactionModel');
-const transactionModel = require('../models/userModel');
+const userModel = require('../models/userModel');           // for user-related logic
+const transactionModel = require('../models/transactionModel'); // for transaction-related logic
+
 module.exports = {
   // Show home page
-  showHome: async (req, res) => {
+  showHome: async (req, 
+    res) => {
     try {
       let transactions = [];
       let balance = 0;
