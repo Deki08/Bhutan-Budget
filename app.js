@@ -1,7 +1,7 @@
 
-const pgSession = require('connect-pg-simple')(session);
 const express = require('express');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const passport = require('passport');
 const flash = require('connect-flash');
 const path = require('path');
