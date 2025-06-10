@@ -21,7 +21,7 @@ const createTransactionsTable = async () => {
   } catch (error) {
     console.error('❌ Error creating transactions table:', error);
   } finally {
-    db.end(); // close connection
+  
   }
 };
 
