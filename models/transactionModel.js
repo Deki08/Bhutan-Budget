@@ -1,95 +1,28 @@
-const db = require('../config/db');
+const db = require('../config/db'); // Adjust the path as needed
 
-module.exports = {
-  // CREATE
-  createTransaction: async (userId, transactionData) => {
-    const { type, description, category, amount, status, date } = transactionData;
-    const result = await db.query(
-      `INSERT INTO transactions (user_id, type, description, category, amount, status, date)
-       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-      [userId, type, description, category, amount, status || 'completed', date || new Date()]
+const createTransactionsTable = async () => {
+  const query = `
+    CREATE TABLE IF NOT EXISTS transactions (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      type VARCHAR(10) NOT NULL CHECK (type IN ('income', 'expense')),
+      description VARCHAR(255) NOT NULL,
+      category VARCHAR(100),
+      amount DECIMAL(10, 2) NOT NULL,
+      status VARCHAR(20) DEFAULT 'completed',
+      date DATE DEFAULT CURRENT_DATE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
-    return result.rows[0];
-  },
+  `;
 
-  // READ (All transactions for user)
-  getUserTransactions: async (userId) => {
-    const result = await db.query(
-      `SELECT * FROM transactions WHERE user_id = $1 ORDER BY date DESC`,
-      [userId]
-    );
-    return result.rows;
-  },
-
-  // READ (Single transaction by ID)
-  getTransactionById: async (transactionId) => {
-    const result = await db.query(
-      `SELECT * FROM transactions WHERE id = $1`,
-      [transactionId]
-    );
-    return result.rows[0];
-  },
-
-  // UPDATE
-  updateTransaction: async (transactionId, updateData) => {
-    const { description, category, amount, status, date } = updateData;
-    const result = await db.query(
-      `UPDATE transactions
-       SET description = $1, category = $2, amount = $3, status = $4, date = $5
-       WHERE id = $6 RETURNING *`,
-      [description, category, amount, status, date, transactionId]
-    );
-    return result.rows[0];
-  },
-
-  // DELETE
-  deleteTransaction: async (transactionId) => {
-    await db.query(
-      `DELETE FROM transactions WHERE id = $1`,
-      [transactionId]
-    );
-  },
-
-  // Get income transactions
-  getIncomeTransactions: async (userId) => {
-    const result = await db.query(
-      `SELECT * FROM transactions WHERE user_id = $1 AND type = 'income' ORDER BY date DESC`,
-      [userId]
-    );
-    return result.rows;
-  },
-
-  // Get expense transactions
-  getExpenseTransactions: async (userId) => {
-    const result = await db.query(
-      `SELECT * FROM transactions WHERE user_id = $1 AND type = 'expense' ORDER BY date DESC`,
-      [userId]
-    );
-    return result.rows;
-  },
-
-  // Get overview data
-  getOverview: async (userId) => {
-    const incomeResult = await db.query(
-      `SELECT COALESCE(SUM(amount), 0) as total FROM transactions WHERE user_id = $1 AND type = 'income'`,
-      [userId]
-    );
-    
-    const expenseResult = await db.query(
-      `SELECT COALESCE(SUM(amount), 0) as total FROM transactions WHERE user_id = $1 AND type = 'expense'`,
-      [userId]
-    );
-    
-    const recentTransactions = await db.query(
-      `SELECT * FROM transactions WHERE user_id = $1 ORDER BY date DESC LIMIT 5`,
-      [userId]
-    );
-
-    return {
-      income: parseFloat(incomeResult.rows[0].total) || 0,
-      expenses: parseFloat(expenseResult.rows[0].total) || 0,
-      balance: parseFloat(incomeResult.rows[0].total) - parseFloat(expenseResult.rows[0].total),
-      transactions: recentTransactions.rows
-    };
+  try {
+    await db.query(query);
+    console.log('✅ Transactions table created.');
+  } catch (error) {
+    console.error('❌ Error creating transactions table:', error);
+  } finally {
+    db.end(); // close connection
   }
 };
+
+createTransactionsTable();

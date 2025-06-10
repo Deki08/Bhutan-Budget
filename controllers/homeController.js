@@ -1,5 +1,5 @@
 const transactionModel = require('../models/transactionModel');
-
+const transactionModel = require('../models/userModel');
 module.exports = {
   // Show home page
   showHome: async (req, res) => {
