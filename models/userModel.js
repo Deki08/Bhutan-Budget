@@ -1,5 +1,6 @@
 const db = require('../config/db');
 
+// ✅ Create users table if not exists
 async function createUsersTable() {
   try {
     await db.query(`
@@ -24,7 +25,13 @@ async function findByEmail(email) {
   return result.rows[0];
 }
 
-// ✅ Create user with verification token
+// ✅ Find a user by ID (for session deserialization)
+async function findById(id) {
+  const result = await db.query('SELECT id, email, is_verified FROM users WHERE id = $1', [id]);
+  return result.rows[0];
+}
+
+// ✅ Create user with hashed password and verification token
 async function createUserWithVerification(email, hashedPassword, token) {
   await db.query(
     'INSERT INTO users (email, password, verification_token) VALUES ($1, $2, $3)',
@@ -32,7 +39,7 @@ async function createUserWithVerification(email, hashedPassword, token) {
   );
 }
 
-// ✅ Verify user by email (clear token and set is_verified)
+// ✅ Verify user by email (sets is_verified and clears token)
 async function verifyUserByEmail(email) {
   const result = await db.query(
     `UPDATE users
@@ -47,6 +54,7 @@ async function verifyUserByEmail(email) {
 module.exports = {
   createUsersTable,
   findByEmail,
+  findById, // 🔥 Added this for Passport
   createUserWithVerification,
   verifyUserByEmail,
 };
