@@ -1,3 +1,5 @@
+
+const pgSession = require('connect-pg-simple')(session);
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
