@@ -10,7 +10,7 @@ async function createUsersTable() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    console.log('Users table created or already exists');
+    console.log('Users table sucessfully created');
   } catch (error) {
     console.error('❌ Error creating users table:', error);
   }

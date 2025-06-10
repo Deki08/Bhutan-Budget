@@ -1,4 +1,3 @@
-
 const express = require('express');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
@@ -13,6 +12,19 @@ const app = express();
 // Database connection
 require('./config/db');
 
+// Table creation
+const { createUsersTable } = require('./models/userModel');
+
+(async () => {
+    try {
+        await createUsersTable();
+        
+        console.log('✅ Tables created or already exist.');
+    } catch (error) {
+        console.error('❌ Error creating tables:', error);
+    }
+})();
+
 // Passport configuration
 const initializePassport = require('./config/passport');
 initializePassport(passport);
@@ -22,11 +34,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Session middleware
 app.use(session({
+    store: new pgSession({
+        conObject: {
+            connectionString: process.env.DATABASE_URL,
+            ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+        }
+    }),
     secret: process.env.SESSION_SECRET || 'your-secret-key',
     resave: false,
     saveUninitialized: false,
@@ -76,7 +95,8 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`✅ Server running on http://localhost:${PORT}`);
 });
