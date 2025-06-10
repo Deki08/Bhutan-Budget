@@ -1,0 +1,19 @@
+<tr class="transaction-row">
+  <td><%= new Date(t.date).toLocaleDateString() %></td>
+  <td><%= t.description %></td>
+  <td><%= t.category %></td>
+  <td class="<%= t.type === 'income' ? 'text-success' : 'text-danger' %>">
+    <%= t.type === 'income' ? '+' : '-' %><%= t.amount %>
+  </td>
+  <td><span class="badge <%= t.status === 'completed' ? 'bg-success' : 'bg-warning' %>"><%= t.status %></span></td>
+  <td class="text-end">
+    <a href="/transactions/edit/<%= t.id %>" class="btn btn-sm btn-outline-primary me-2">
+      <i class="bi bi-pencil"></i> Edit
+    </a>
+    <form action="/transactions/delete/<%= t.id %>" method="POST" class="d-inline delete-form">
+      <button type="submit" class="btn btn-sm btn-outline-danger">
+        <i class="bi bi-trash"></i> Delete
+      </button>
+    </form>
+  </td>
+</tr> 

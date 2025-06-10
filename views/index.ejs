@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhutan Budget - Expense Tracking</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+</head>
+<body>
+    <%- include('partials/header', { isAuthenticated: isAuthenticated, title: 'Home' }) %>
+    
+    <section class="hero">
+        <img src="/images/hero-image.jpg" alt="Financial health illustration" width="600" height="400">
+    </section>
+
+    <section class="features">
+        <h2>Why Choose Bhutan Budget?</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>Expense Tracking</h3>
+                <p>Track your daily expenses effortlessly</p>
+            </div>
+            <div class="feature">
+                <h3>Daily Budgeting</h3>
+                <p>Set and manage daily spending limits</p>
+            </div>
+            <div class="feature">
+                <h3>Financial Reports</h3>
+                <p>Generate detailed financial reports</p>
+            </div>
+            <div class="feature">
+                <h3>Secure Storage</h3>
+                <p>Your financial data is safe with us</p>
+            </div>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>
+    <script src="/js/main.js"></script>
+</body>
+</html>

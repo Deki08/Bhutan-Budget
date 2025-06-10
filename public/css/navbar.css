@@ -1,0 +1,108 @@
+/* public/css/navbar.css */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+}
+
+.hero-header {
+    background: linear-gradient(135deg, var(--primary-color), #1a252f);
+    color: white;
+    padding-bottom: 1rem;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+/* Style for regular nav links */
+.nav-links a:not(.btn-login):not(.btn-signup):not(.btn-logout) {
+    position: relative;
+}
+
+.nav-links a:not(.btn-login):not(.btn-signup):not(.btn-logout)::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--secondary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:not(.btn-login):not(.btn-signup):not(.btn-logout):hover::after {
+    width: 70%;
+}
+
+/* Button styles */
+.btn-login {
+    background: transparent;
+    border: 1px solid white;
+}
+
+.btn-signup {
+    background: var(--secondary-color);
+}
+
+.btn-logout {
+    background: var(--accent-color);
+}
+
+.btn-login:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-signup:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-logout:hover {
+    background: #c0392b;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-links {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
