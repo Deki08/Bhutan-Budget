@@ -41,7 +41,7 @@ module.exports = {
 
       req.logIn(user, (err) => {
         if (err) return next(err);
-        return res.redirect('/overview');
+        return res.redirect('/transactions/overview');
       });
     })(req, res, next);
   },
