@@ -10,7 +10,7 @@ require('dotenv').config();
 const app = express();
 
 // Database connection
-const db = require('./config/db');
+const db = require('../config/db');
 
 // Passport configuration
 require('./config/passport')(passport);
@@ -57,9 +57,9 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/', require('./routes/homeRoutes'));
-app.use('/auth', require('./routes/authRoutes'));
-app.use('/transactions', require('./routes/transactionRoutes'));
+app.use('/', require('../routes/homeRoutes'));
+app.use('/auth', require('../routes/authRoutes'));
+app.use('/transactions', require('../routes/transactionRoutes'));
 
 // Serve React app for all other routes (only in production or when using React)
 app.get('*', (req, res) => {
