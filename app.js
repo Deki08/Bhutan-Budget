@@ -63,7 +63,7 @@ app.use('/transactions', require('./routes/transactionRoutes'));
 
 // Serve React app for all other routes (only in production or when using React)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.ejs'));
+  res.sendFile(path.join(__dirname, 'views', 'index.ejs'));
 });
 
 // Error handlers
