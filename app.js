@@ -10,7 +10,7 @@ require('dotenv').config();
 const app = express();
 
 // Database connection
-const db = require('../config/db');
+const db = require('./config/db');
 
 // Passport configuration
 require('./config/passport')(passport);
