@@ -20,19 +20,18 @@ const createUsersTable = async () => {
   }
 };
 
-// ✅ Find a user by email
+createUsersTable();
+
 async function findByEmail(email) {
   const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
   return result.rows[0];
 }
 
-// ✅ Find a user by ID (for session deserialization)
 async function findById(id) {
   const result = await db.query('SELECT id, email, is_verified FROM users WHERE id = $1', [id]);
   return result.rows[0];
 }
 
-// ✅ Create user with hashed password and verification token
 async function createUserWithVerification(email, hashedPassword, token) {
   await db.query(
     'INSERT INTO users (email, password, verification_token) VALUES ($1, $2, $3)',
@@ -40,7 +39,6 @@ async function createUserWithVerification(email, hashedPassword, token) {
   );
 }
 
-// ✅ Verify user by email (sets is_verified and clears token)
 async function verifyUserByEmail(email) {
   const result = await db.query(
     `UPDATE users
