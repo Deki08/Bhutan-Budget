@@ -61,6 +61,11 @@ app.use('/', require('./routes/homeRoutes'));
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/transactions', require('./routes/transactionRoutes'));
 
+// Serve React app for all other routes (only in production or when using React)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Error handlers
 app.use((req, res) => {
   res.status(404).render('404', {
